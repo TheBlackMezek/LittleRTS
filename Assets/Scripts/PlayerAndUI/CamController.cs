@@ -13,6 +13,10 @@ public class CamController : MonoBehaviour {
     [SerializeField] private float deltaZoomMultiplier;
     [SerializeField] private float extraMoveZoomMultiplier;
 
+    [Header("Links")]
+
+    [SerializeField] private Team team;
+
 
 
     private void Start()
