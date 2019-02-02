@@ -16,6 +16,11 @@ public class CamController : MonoBehaviour {
     [Header("Links")]
 
     [SerializeField] private Team team;
+    [SerializeField] private Camera cam;
+
+
+
+    private List<Unit> selectedUnits = new List<Unit>();
 
 
 
@@ -44,6 +49,32 @@ public class CamController : MonoBehaviour {
         pos.z += iVert * dt * (moveSpeed + pos.y * extraMoveZoomMultiplier);
 
         transform.position = pos;
+
+
+
+        //Mouse commands
+        if(Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, maxZoom))
+            {
+                Unit unit = hit.transform.GetComponent<Unit>();
+                if (unit && unit.TeamID == team.ID)
+                {
+                    unit.Select();
+                    selectedUnits.Add(unit);
+                }
+                else
+                {
+                    for(int i = 0; i < selectedUnits.Count; ++i)
+                    {
+                        selectedUnits[i].Deselect();
+                    }
+                    selectedUnits.Clear();
+                }
+            }
+        }
     }
 
 }

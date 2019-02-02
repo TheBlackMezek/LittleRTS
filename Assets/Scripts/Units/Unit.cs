@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class Unit : Damagable {
 
-    [Header("Basic Settings")]
+    [Header("Unit Settings")]
     
     [SerializeField] private float damage;
     [SerializeField] private float range;
     [SerializeField] private float attacksPerMinute;
     [SerializeField] private float moveSpeed;
+
+    [Header("Unit Links")]
+
+    [SerializeField] private UnityEngine.UI.Image selectedImage;
+
+
+
+    private bool selected;
 
 
 
@@ -18,6 +26,9 @@ public class Unit : Damagable {
         base.Start();
 
         team.RegisterUnit(this);
+
+        selectedImage.color = team.SelectionColor;
+        selectedImage.gameObject.SetActive(false);
     }
 
     public override void Kill()
@@ -25,6 +36,18 @@ public class Unit : Damagable {
         team.UnregisterUnit(this);
 
         base.Kill();
+    }
+
+    public void Select()
+    {
+        selected = true;
+        selectedImage.gameObject.SetActive(true);
+    }
+
+    public void Deselect()
+    {
+        selected = false;
+        selectedImage.gameObject.SetActive(false);
     }
 
 }
