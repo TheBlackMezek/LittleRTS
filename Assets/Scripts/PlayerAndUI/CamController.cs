@@ -34,7 +34,7 @@ public class CamController : MonoBehaviour {
         //Get variables for later use
         float dt = Time.deltaTime;
 
-        float iScroll = Input.GetAxis("Mouse ScrollWheel");
+        float iScroll = -Input.GetAxis("Mouse ScrollWheel");
         float iVert = Input.GetAxis("Vertical");
         float iHorz = Input.GetAxis("Horizontal");
 
