@@ -14,6 +14,7 @@ public class Unit : Damagable {
     [Header("Unit Links")]
 
     [SerializeField] private UnityEngine.UI.Image selectedImage;
+    [SerializeField] private UnityEngine.AI.NavMeshAgent navAgent;
 
 
 
@@ -29,6 +30,8 @@ public class Unit : Damagable {
 
         selectedImage.color = team.SelectionColor;
         selectedImage.gameObject.SetActive(false);
+
+        navAgent.speed = moveSpeed;
     }
 
     public override void Kill()
@@ -48,6 +51,11 @@ public class Unit : Damagable {
     {
         selected = false;
         selectedImage.gameObject.SetActive(false);
+    }
+
+    public void SetDestination(Vector3 pos)
+    {
+        navAgent.SetDestination(pos);
     }
 
 }

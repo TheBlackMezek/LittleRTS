@@ -75,6 +75,18 @@ public class CamController : MonoBehaviour {
                 }
             }
         }
+        else if(Input.GetMouseButtonDown(1))
+        {
+            RaycastHit hit;
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, maxZoom))
+            {
+                for (int i = 0; i < selectedUnits.Count; ++i)
+                {
+                    selectedUnits[i].SetDestination(hit.point);
+                }
+            }
+        }
     }
 
 }
