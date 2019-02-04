@@ -10,27 +10,57 @@ public class Team : MonoBehaviour {
     [SerializeField] private Color selectionColor;
     [SerializeField] private int startingMass;
     [SerializeField] private int id;
+    [SerializeField] private float baseEnergyPerSecond;
+    [SerializeField] private float startingEnergy;
+    [SerializeField] private float maxEnergy;
 
-
+    public VoidReturnFloat OnEnergyChanged;
 
     public Color TeamColor { get { return color; } }
     public Color SelectionColor { get { return selectionColor; } }
     public int Mass { get; private set; }
     public int ID { get { return id; } }
 
+    /// <summary>
+    /// Do NOT set this directly, always set through Energy
+    /// </summary>
+    private float energy;
+    public float Energy
+    {
+        get { return energy; }
+        private set
+        {
+            energy = Mathf.Clamp(value, 0f, maxEnergy);
+            if(OnEnergyChanged != null)
+                OnEnergyChanged(energy);
+        }
+    }
+
     private List<Unit> units = new List<Unit>();
     private List<Unit> selectedUnits = new List<Unit>();
+
+    private float energyTimer = 1f;
+    private float energyPerSecond;
 
 
 
     private void Start()
     {
         Mass = startingMass;
+        Energy = startingEnergy;
+        CalculateEnergyPerSecond();
     }
 
     private void Update()
     {
         float dt = Time.deltaTime;
+
+        energyTimer -= dt;
+        if(energyTimer <= 0f)
+        {
+            energyTimer += 1f;
+            Energy += energyPerSecond;
+        }
 
         for(int i = 0; i < units.Count; ++i)
         {
@@ -79,6 +109,13 @@ public class Team : MonoBehaviour {
             selectedUnits[i].Deselect();
 
         selectedUnits.Clear();
+    }
+
+
+
+    private void CalculateEnergyPerSecond()
+    {
+        energyPerSecond = baseEnergyPerSecond;
     }
 
 }

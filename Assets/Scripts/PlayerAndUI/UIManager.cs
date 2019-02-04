@@ -7,6 +7,8 @@ public class UIManager : MonoBehaviour {
 
     [SerializeField] private CamController camController;
     [SerializeField] private RectTransform dragSelect;
+    [SerializeField] private TMPro.TextMeshProUGUI energyText;
+    [SerializeField] private Team playerTeam;
 
 
 
@@ -14,6 +16,7 @@ public class UIManager : MonoBehaviour {
     {
         camController.OnDragStart = OnDragStart;
         camController.OnDragEnd = OnDragEnd;
+        playerTeam.OnEnergyChanged = OnPlayerEnergyChanged;
     }
 
     private void Update()
@@ -46,6 +49,11 @@ public class UIManager : MonoBehaviour {
         dragSelect.position = dragCenter;
         dragSelect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, halfExtents.x);
         dragSelect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, halfExtents.y);
+    }
+
+    private void OnPlayerEnergyChanged(float energy)
+    {
+        energyText.text = "Energy: " + (int)energy;
     }
 
 }
