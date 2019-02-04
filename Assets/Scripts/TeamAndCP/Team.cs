@@ -19,6 +19,7 @@ public class Team : MonoBehaviour {
     public int ID { get { return id; } }
 
     private List<Unit> units = new List<Unit>();
+    private List<Unit> selectedUnits = new List<Unit>();
 
 
 
@@ -45,6 +46,39 @@ public class Team : MonoBehaviour {
     public void UnregisterUnit(Unit unit)
     {
         units.Remove(unit);
+    }
+
+    public void SetUnitsDestination(Vector3 pos)
+    {
+        for (int i = 0; i < selectedUnits.Count; ++i)
+            selectedUnits[i].SetDestination(pos);
+    }
+
+    public void SelectUnit(Unit unit)
+    {
+        unit.Select();
+        selectedUnits.Add(unit);
+    }
+
+    public void SelectUnitsInBounds(Bounds bounds, Camera cam)
+    {
+        for(int i = 0; i < units.Count; ++i)
+        {
+            if (bounds.Contains(cam.WorldToViewportPoint(units[i].transform.position)))
+            {
+                if (!selectedUnits.Contains(units[i]))
+                    selectedUnits.Add(units[i]);
+                units[i].Select();
+            }
+        }
+    }
+
+    public void DeselectAllUnits()
+    {
+        for (int i = 0; i < selectedUnits.Count; ++i)
+            selectedUnits[i].Deselect();
+
+        selectedUnits.Clear();
     }
 
 }

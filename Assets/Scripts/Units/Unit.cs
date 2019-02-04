@@ -41,12 +41,18 @@ public class Unit : Damagable {
         base.Kill();
     }
 
+    /// <summary>
+    /// This should ONLY be called from the Team class
+    /// </summary>
     public void Select()
     {
         selected = true;
         selectedImage.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// This should ONLY be called from the Team class
+    /// </summary>
     public void Deselect()
     {
         selected = false;
