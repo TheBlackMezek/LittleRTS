@@ -8,6 +8,7 @@ public class Team : MonoBehaviour {
 
     [SerializeField] private Color color;
     [SerializeField] private Color selectionColor;
+    [SerializeField] private Color progressBarColor;
     [SerializeField] private int startingMass;
     [SerializeField] private int id;
     [SerializeField] private float baseEnergyPerSecond;
@@ -18,6 +19,7 @@ public class Team : MonoBehaviour {
 
     public Color TeamColor { get { return color; } }
     public Color SelectionColor { get { return selectionColor; } }
+    public Color ProgressBarColor { get { return progressBarColor; } }
     public int Mass { get; private set; }
     public int ID { get { return id; } }
 
@@ -38,6 +40,7 @@ public class Team : MonoBehaviour {
 
     private List<Unit> units = new List<Unit>();
     private List<Unit> selectedUnits = new List<Unit>();
+    private List<Building> buildings = new List<Building>();
 
     private float energyTimer = 1f;
     private float energyPerSecond;
@@ -66,6 +69,10 @@ public class Team : MonoBehaviour {
         {
             units[i].CustomUpdate(dt);
         }
+        for(int i = 0; i < buildings.Count; ++i)
+        {
+            buildings[i].CustomUpdate(dt);
+        }
     }
 
     public void RegisterUnit(Unit unit)
@@ -76,6 +83,16 @@ public class Team : MonoBehaviour {
     public void UnregisterUnit(Unit unit)
     {
         units.Remove(unit);
+    }
+
+    public void RegisterBuilding(Building b)
+    {
+        buildings.Add(b);
+    }
+
+    public void UnregisterBuilding(Building b)
+    {
+        buildings.Remove(b);
     }
 
     public void SetUnitsDestination(Vector3 pos)

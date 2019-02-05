@@ -16,7 +16,7 @@ public class Unit : Damagable {
     [SerializeField] private UnityEngine.UI.Image selectedImage;
     [SerializeField] private UnityEngine.AI.NavMeshAgent navAgent;
 
-
+    public VoidReturnUnit OnKilled;
 
     private bool selected;
 
@@ -36,6 +36,9 @@ public class Unit : Damagable {
 
     public override void Kill()
     {
+        if (OnKilled != null)
+            OnKilled(this);
+
         team.UnregisterUnit(this);
 
         base.Kill();

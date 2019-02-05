@@ -4,5 +4,6 @@ using UnityEngine;
 
 
 
+public delegate void VoidReturnUnit(Unit u);
 public delegate void VoidReturnV3(Vector3 vec);
 public delegate void VoidReturnFloat(float f);
