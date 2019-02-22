@@ -27,7 +27,7 @@ public class Damagable : MonoBehaviour {
     {
         team = TeamManager.Instance.GetTeam(TeamID);
 
-        HP = maxHP / 2f;
+        HP = maxHP;
         teamColorImage.color = team.TeamColor;
     }
 
