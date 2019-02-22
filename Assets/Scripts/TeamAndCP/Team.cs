@@ -9,6 +9,7 @@ public class Team : MonoBehaviour {
     [SerializeField] private Color color;
     [SerializeField] private Color selectionColor;
     [SerializeField] private Color progressBarColor;
+    [SerializeField] private Color weaponColor;
     [SerializeField] private int startingMass;
     [SerializeField] private int id;
     [SerializeField] private float baseEnergyPerSecond;
@@ -20,6 +21,7 @@ public class Team : MonoBehaviour {
     public Color TeamColor { get { return color; } }
     public Color SelectionColor { get { return selectionColor; } }
     public Color ProgressBarColor { get { return progressBarColor; } }
+    public Color WeaponColor { get { return weaponColor; } }
     public int Mass { get; private set; }
     public int ID { get { return id; } }
 

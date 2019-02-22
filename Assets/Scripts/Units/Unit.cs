@@ -10,15 +10,20 @@ public class Unit : Damagable {
     [SerializeField] private float range;
     [SerializeField] private float attacksPerMinute;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float aggroCheckInterval;
+    [SerializeField] private float laserDisplayTime;
 
     [Header("Unit Links")]
 
     [SerializeField] private UnityEngine.UI.Image selectedImage;
     [SerializeField] private UnityEngine.AI.NavMeshAgent navAgent;
+    [SerializeField] private LineRenderer laserRenderer;
 
     public VoidReturnUnit OnKilled;
 
     private bool selected;
+    private Damagable target = null;
+    private float attackInterval;
 
 
 
@@ -28,10 +33,88 @@ public class Unit : Damagable {
 
         team.RegisterUnit(this);
 
+        attackInterval = 60f / attacksPerMinute;
+
         selectedImage.color = team.SelectionColor;
         selectedImage.gameObject.SetActive(false);
 
+        laserRenderer.endColor = team.WeaponColor;
+        laserRenderer.startColor = team.WeaponColor;
+        laserRenderer.enabled = false;
+
         navAgent.speed = moveSpeed;
+
+        StartCoroutine("CheckForTarget");
+    }
+
+    protected IEnumerator CheckForTarget()
+    {
+        yield return new WaitForSeconds(aggroCheckInterval);
+        
+        Damagable trg = null;
+
+        if(target == null)
+        {
+            Vector3 pos = transform.position;
+            Collider[] colliders = Physics.OverlapSphere(pos, range);
+
+            float closestDist = float.MaxValue;
+            for(int i = 0; i < colliders.Length; ++i)
+            {
+                Damagable d = colliders[i].GetComponent<Damagable>();
+                Debug.Log(d);
+                if(d != null && d.TeamID != TeamID)
+                {
+                    float dist = Vector3.Distance(pos, colliders[i].transform.position);
+                    if (dist < closestDist)
+                    {
+                        closestDist = dist;
+                        trg = d;
+                    }
+                }
+            }
+        }
+
+        if (trg != null)
+            Attack(trg);
+
+        StartCoroutine("CheckForTarget");
+    }
+
+    public void Attack(Damagable trg)
+    {
+        target = trg;
+        StartCoroutine("AttackRoutine");
+    }
+
+    protected IEnumerator AttackRoutine()
+    {
+        if(target == null || Vector3.Distance(transform.position, target.transform.position) > range)
+        {
+            target = null;
+            //StopCoroutine("AttackRoutine");
+            yield return null;
+        }
+        else
+        {
+            laserRenderer.SetPosition(0, transform.position);
+            laserRenderer.SetPosition(1, target.transform.position);
+            laserRenderer.enabled = true;
+            StartCoroutine("HideLaser");
+
+            target.Damage(damage);
+
+            yield return new WaitForSeconds(attackInterval);
+
+            StartCoroutine("AttackRoutine");
+        }
+    }
+
+    protected IEnumerator HideLaser()
+    {
+        yield return new WaitForSeconds(laserDisplayTime);
+
+        laserRenderer.enabled = false;
     }
 
     public override void Kill()
