@@ -44,7 +44,7 @@ public class Building : Damagable {
         {
             GameObject obj = Instantiate(slotImagePrefab);
             RectTransform t = obj.GetComponent<RectTransform>();
-            t.parent = slotImageHolder;
+            t.SetParent(slotImageHolder);
             t.localPosition = new Vector3(leftStart + imgWidth * i, 0f, 0f);
             t.localEulerAngles = Vector3.zero;
             UnityEngine.UI.Image[] imgs = obj.GetComponentsInChildren<UnityEngine.UI.Image>();
