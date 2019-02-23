@@ -17,6 +17,7 @@ public class Building : Damagable {
     [SerializeField] private Transform progressBar;
     [SerializeField] private UnityEngine.UI.Image progressBarColorImage;
     [SerializeField] private Transform unitSpawnPos;
+    [SerializeField] private Transform unitRallyPos;
 
     private UnityEngine.UI.Image[] unitSlotImages;
     private int unitCount = 0;
@@ -76,6 +77,7 @@ public class Building : Damagable {
                 Unit unit = obj.GetComponent<Unit>();
                 unit.OnKilled = OnSpawnedUnitKilled;
                 unit.TeamID = TeamID;
+                unit.SetDestination(unitRallyPos.position);
             }
 
             Vector3 scale = progressBar.localScale;

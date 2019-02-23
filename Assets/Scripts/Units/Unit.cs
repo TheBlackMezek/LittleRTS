@@ -62,7 +62,6 @@ public class Unit : Damagable {
             for(int i = 0; i < colliders.Length; ++i)
             {
                 Damagable d = colliders[i].GetComponent<Damagable>();
-                Debug.Log(d);
                 if(d != null && d.TeamID != TeamID)
                 {
                     float dist = Vector3.Distance(pos, colliders[i].transform.position);
@@ -92,7 +91,6 @@ public class Unit : Damagable {
         if(target == null || Vector3.Distance(transform.position, target.transform.position) > range)
         {
             target = null;
-            //StopCoroutine("AttackRoutine");
             yield return null;
         }
         else
